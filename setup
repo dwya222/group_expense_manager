@@ -1,0 +1,21 @@
+#!/bin/bash
+
+read -p 'Username: ' user
+
+if [[ $user == "David" || $user == "Andrew" ]]
+then
+  #sed -i ".bak" "s/user=\"Undefined\"/user=$user/g" update_expenses
+  sed -i ".bak" "s/user=.*/user=$user/g" update_expenses
+  #sed 's/.*TEXT_TO_BE_REPLACED.*/This line is removed by the admin./'
+  echo Thank you for setting up, $user
+else
+  echo Invalid user name
+  echo Accepted user names: Andrew or David
+fi
+
+if ls | grep update_expenses.bak > /dev/null
+then
+  rm update_expenses.bak
+fi
+
+git update-index --skip-worktree update_expenses

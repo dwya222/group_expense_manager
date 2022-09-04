@@ -1,0 +1,28 @@
+#!/bin/bash
+
+user=Undefined
+if [[ $user == David || $user == Andrew ]]
+then
+  :
+else
+  echo "Error, please run the setup script first (./setup)"
+  exit 125
+fi
+git checkout main
+git fetch --all --prune
+git pull --rebase
+python3 interface.py $user
+if git status --porcelain | grep expense_db.csv
+then
+  if ls | grep commit_log.txt > /dev/null
+  then
+    git add expense_db.csv
+    git commit -m "$(<commit_log.txt)"
+    git push
+    rm commit_log.txt
+  else
+    echo "No changes to database detected"
+  fi
+else
+  echo "No changes to database detected"
+fi
