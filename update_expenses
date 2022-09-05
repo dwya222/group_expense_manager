@@ -12,13 +12,14 @@ git checkout main
 git fetch --all --prune
 git pull --rebase
 python3 interface.py $user
-if git status --porcelain | grep expense_db.csv
+if git status --porcelain | grep expense_db.csv > /dev/null
 then
   if ls | grep commit_log.txt > /dev/null
   then
     git add expense_db.csv
     git commit -m "$(<commit_log.txt)"
     git push
+    echo "Changes added successfully"
     rm commit_log.txt
   else
     echo "No changes to database detected"

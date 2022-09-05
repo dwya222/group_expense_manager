@@ -1,1 +1,17 @@
+#!/bin/bash
+
+git checkout main
+git fetch --all --prune
+git pull --rebase
+
 python3 summary.py
+
+if git status --porcelain | grep expense_summary.csv > /dev/null
+then
+  git add expense_summary.csv
+  git commit -m "Updated expense_summary"
+  git push
+  echo "Changes added successfully"
+else
+  echo "No changes to expense_summary detected"
+fi
