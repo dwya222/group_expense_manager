@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import pandas as pd
+import numpy as np
 import os
 
 expense_db_path = "./expense_db.csv"
@@ -54,14 +55,14 @@ class ExpenseSummarizer:
             total = 0
             for cost in self.expense_summary.loc[month_indices, 'Spent'].to_list():
                 total += cost
-            individual_owes = total/len(users)
+            individual_owes = np.round(total / len(users), 2)
             update_index = (self.expense_summary['Month'].eq(month)
                             & self.expense_summary['Spent'].lt(individual_owes))
             self.expense_summary.loc[update_index, 'Owes'] = (individual_owes -
                     self.expense_summary.loc[update_index, 'Spent'])
 
     def saveSummaryDb(self):
-        self.expense_summary.to_csv(expense_summary_path, index=False)
+        self.expense_summary.to_csv(expense_summary_path, float_format='%.2f', index=False)
 
 if __name__ == "__main__":
     es = ExpenseSummarizer()
